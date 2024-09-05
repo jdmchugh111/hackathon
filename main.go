@@ -71,6 +71,9 @@ func main() {
             return
         }
 
+				// Create a Google search URL
+        searchURL := fmt.Sprintf("https://www.google.com/search?q=%s", url.QueryEscape(directoryName))
+
 				// Print the extracted directory name for debugging
         log.Println("Directory Name:", directoryName)
 
@@ -81,7 +84,7 @@ func main() {
         fmt.Fprint(w, "<html><body>")
 
 				// Write the directory name as the page header
-        fmt.Fprintf(w, "<h1>%s</h1>", directoryName)
+        fmt.Fprintf(w, `<h1><a href="%s" target="_blank">%s</a></h1>`, searchURL, directoryName)
 
         // Display the image
         fmt.Fprintf(w, `<img src="%s" alt="Image" style="max-width: 100%%; height: auto;"><br>`, imageResponse.ImageURL)
