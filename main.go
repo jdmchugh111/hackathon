@@ -80,18 +80,81 @@ func main() {
         // Set the content type to HTML
         w.Header().Set("Content-Type", "text/html")
 
-        // Write the HTML header
-        fmt.Fprint(w, "<html><body>")
-
-				// Write the directory name as the page header
-        fmt.Fprintf(w, `<h1><a href="%s" target="_blank">%s</a></h1>`, searchURL, directoryName)
-
-        // Display the image
-        fmt.Fprintf(w, `<img src="%s" alt="Image" style="max-width: 100%%; height: auto;"><br>`, imageResponse.ImageURL)
-
-        // Write the HTML footer
-        fmt.Fprint(w, "</body></html>")
+				// Write the HTML content
+				fmt.Fprintf(w, `
+        <html>
+        <head>
+            <title>Food Randomizer</title>
+            <style>
+                body {
+                    background-color: #121212;
+                    color: #e0e0e0;
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    height: 100vh; 
+                    display: flex;
+                    flex-direction: column; 
+                }
+                header {
+                    position: fixed;
+                    top: 0;
+                    width: 100%%;
+                    background-color: #333;
+                    color: #fff;
+                    padding: 10px;
+                    text-align: center;
+                    z-index: 1000; 
+                }
+                .main-content {
+                    flex: 1;
+                    display: flex;
+                    justify-content: center; 
+                    margin-top: 60px;        
+                    padding: 20px;
+                }
+                .content-wrapper {
+                    text-align: center; 
+                }
+                h1 {
+                    color: #ffffff;
+                }
+                a {
+                    color: #bb86fc;
+                    text-decoration: none;
+                }
+                a:hover {
+                    text-decoration: underline;
+                }
+                img {
+                    max-width: 50%%;
+                    height: auto;   
+                    border-radius: 8px;
+                }
+                /* Dark mode media query */
+                @media (prefers-color-scheme: dark) {
+                    body {
+                        background-color: #121212;
+                        color: #e0e0e0;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <header>
+                <h1>Food Randomizer</h1> 
+            </header>
+            <div class="main-content">
+                <div class="content-wrapper">
+                    <h1><a href="%s" target="_blank">%s</a></h1>
+                    <img src="%s" alt="Image">
+                </div>
+            </div>
+        </body>
+        </html>
+        `, searchURL, directoryName, imageResponse.ImageURL)
     })
+
 
     log.Println("Server started on :3000...")
     if err := http.ListenAndServe(":3000", nil); err != nil {
